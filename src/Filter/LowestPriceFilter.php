@@ -9,6 +9,12 @@ class LowestPriceFilter implements PromotionsFilterInterface
 {
     public function apply(PromotionEnquiryInterface $enquiry, Promotion ...$promotion): PromotionEnquiryInterface
     {
+        $price = $enquiry->getProduct()->getPrice();
+        $quantity = $enquiry->getQuantity();
+        //$lowestPrice = $quantity * $price;
+
+        //$modifiedPrice = $priceModifier->modify($price, $quantity, $promotion, $enquiry);
+
         //TODO: split this into interfaces to resolve the Interface Segregation Principle
         $enquiry->setDiscountedPrice(50);
         $enquiry->setPrice(100);

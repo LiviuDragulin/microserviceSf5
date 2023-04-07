@@ -3,9 +3,9 @@
 namespace App\Tests\unit;
 
 use App\DTO\LowestPriceEnquiry;
+use App\Entity\Product;
 use App\Entity\Promotion;
 use App\Filter\LowestPriceFilter;
-use App\Tests\ServiceTestCase;
 use Symfony\Bundle\FrameworkBundle\Test\WebTestCase;
 
 class LowestPriceFilterTest extends WebTestCase
@@ -14,8 +14,15 @@ class LowestPriceFilterTest extends WebTestCase
     public function lowest_price_promotions_filtering_is_applied_correctly(): void
     {
         //Given
+        $product = new Product();
+        $product->setPrice(100);
+
         $lowestPriceFilter = static::getContainer()->get(LowestPriceFilter::class);
+
         $enquiry = new LowestPriceEnquiry();
+        $enquiry->setProduct($product);
+        $enquiry->setQuantity(5);
+
         $promotions = $this->promotionsDataProvider();
 
         //When
