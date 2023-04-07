@@ -7,5 +7,5 @@ use App\Entity\Promotion;
 
 interface PromotionsFilterInterface
 {
-    public function apply(PromotionEnquiryInterface $enquiry, Promotion ...$promotion): PromotionEnquiryInterface;
+    public function apply(PromotionEnquiryInterface $enquiry, Promotion ...$promotions): PromotionEnquiryInterface;
 }
