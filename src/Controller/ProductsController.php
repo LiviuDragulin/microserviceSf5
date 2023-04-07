@@ -7,7 +7,6 @@ use App\Filter\PromotionsFilterInterface;
 use App\Repository\ProductRepository;
 use App\Repository\PromotionRepository;
 use App\Service\Serializer\DTOSerializer;
-use Doctrine\Common\Proxy\Proxy;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
@@ -45,15 +44,19 @@ class ProductsController extends AbstractController
 
         $lowestPriceEnquiry->setProduct($product);
 
+        /*
+            TODO: This can return NULL, but the apply() method below can only 
+            handle an array of $promotions, so add a condition to handle NULL 
+        */
         $promotions = $this->promotionRepository->findValidForProduct(
             $product, 
             date_create_immutable($lowestPriceEnquiry->getRequestDate())
         );
         
-        $modifiedEnquiry = $promotionsFilter->apply($lowestPriceEnquiry, $promotions);
+        $modifiedEnquiry = $promotionsFilter->apply($lowestPriceEnquiry, ...$promotions);
 
         $responseContent = $serializer->serialize($modifiedEnquiry, 'json');
 
-        return new Response($responseContent, 200);
+        return new Response($responseContent, 200, ['Content-Type' => 'application/json']);
     }
 }
