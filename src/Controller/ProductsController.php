@@ -13,8 +13,6 @@ use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
-use Symfony\Contracts\Cache\CacheInterface;
-use Symfony\Contracts\Cache\ItemInterface;
 
 class ProductsController extends AbstractController
 {
@@ -34,17 +32,9 @@ class ProductsController extends AbstractController
         PromotionCache $promotionCache
     ): Response
     {
-        if ($request->headers->has('force_fail')) {
-            return new JsonResponse([
-                ['error' => 'Promotions Engine failure message'],
-                $request->headers->get('force_fail')
-            ]);
-        }
-
-        /** @var LowestPriceEnquiry $lowestPriceEnquiry */
         $lowestPriceEnquiry = $serializer->deserialize($request->getContent(), LowestPriceEnquiry::class, 'json');
 
-        $product = $this->productRepository->find($id);
+        $product = $this->productRepository->findOrFail($id);
 
         $lowestPriceEnquiry->setProduct($product);
 
