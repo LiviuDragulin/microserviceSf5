@@ -1,5 +1,8 @@
 This is a project with a single microservice, for testing purposes.
 
+
+
+Install the project steps:
 1. After you grab the project files, you will run the composer install -o
 2. You can run the Symfony's web server using: symfony server:start
 3. You will have access to the App on this page: http://127.0.0.1:8000
@@ -18,6 +21,8 @@ This is a project with a single microservice, for testing purposes.
 }
 ```
 9. The Unit tests are run with: vendor/bin/phpunit tests/unit/
+
+
 
 Steps to develop this from scratch:
 1. We setup the project on GitHub
