@@ -4,9 +4,10 @@ This is a project with a single microservice, for testing purposes.
 2. You can run the Symfony's web server using: symfony server:start
 3. You will have access to the App on this page: http://127.0.0.1:8000
 4. Run the command to create the containers in Docker (MySQL and Redis): docker-compose up -d
-5. Run the command to add some test data in the Database: symfony console doctrine:fixtures:load
-6. To test the request/response use the url: http://127.0.0.1:8000/products/{{product_id}}/lowest-price
-7. Send a POST request from Postman with this JSON (change the {{product_id}} with the product id you have in the database or set an environment variable in Postman):
+5. Run the migration file to create the SQL Schema: symfony console doctrine:migrations:migrate
+6. Run the command to add some test data in the Database: symfony console doctrine:fixtures:load
+7. To test the request/response use the url: http://127.0.0.1:8000/products/{{product_id}}/lowest-price
+8. Send a POST request from Postman with this JSON (change the {{product_id}} with the product id you have in the database or set an environment variable in Postman):
 ```
     {
     "quantity": 5,
@@ -16,7 +17,7 @@ This is a project with a single microservice, for testing purposes.
     "product_id": {{product_id}}
 }
 ```
-8. The Unit tests are run with: vendor/bin/phpunit tests/unit/
+9. The Unit tests are run with: vendor/bin/phpunit tests/unit/
 
 Steps to develop this from scratch:
 1. We setup the project on GitHub
