@@ -5,6 +5,7 @@ namespace App\Tests\unit;
 use App\DTO\LowestPriceEnquiry;
 use App\Entity\Promotion;
 use App\Filter\Modifier\DateRangeMultiplier;
+use App\Filter\Modifier\EvenItemsMultiplier;
 use App\Filter\Modifier\FixedPriceVoucher;
 use Symfony\Bundle\FrameworkBundle\Test\WebTestCase;
 
@@ -54,5 +55,27 @@ class PriceModifiersTest extends WebTestCase
 
         //Then
         $this->assertEquals(500, $modifiedPrice);
+    }
+
+    /** @test */
+    public function EvenItemsMultiplier_returns_a_correctly_modified_price(): void
+    {
+        //Given
+        $enquiry = new LowestPriceEnquiry();
+        $enquiry->setQuantity(5);
+
+        $promotion = new Promotion();
+        $promotion->setName('Buy one get one free');
+        $promotion->setAdjustment(0.5);
+        $promotion->setCriteria(["minimum_quantity" => 2]);
+        $promotion->setType('even_items_multipliers');
+
+        $evenItemsMultiplier = new EvenItemsMultiplier();
+
+        //When
+        $modifiedPrice = $evenItemsMultiplier->modify(100, 5, $promotion, $enquiry);
+
+        //Then
+        $this->assertEquals(300, $modifiedPrice);
     }
 }
