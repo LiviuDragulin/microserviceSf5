@@ -14,20 +14,24 @@ class LowestPriceFilter implements PromotionsFilterInterface
 
     public function apply(PromotionEnquiryInterface $enquiry, Promotion ...$promotions): PromotionEnquiryInterface
     {
+        $enquiry->setPrice(100);
         $price = $enquiry->getProduct()->getPrice();
         $quantity = $enquiry->getQuantity();
-        //$lowestPrice = $quantity * $price;
+        $lowestPrice = $quantity * $price;
 
         foreach ($promotions as $promotion) {
             $priceModifier = $this->priceModifierFactory->create($promotion->getType());
-            
-            $priceModifier->modify($price, $quantity, $promotion, $enquiry);
 
-            //TODO: split this into interfaces to resolve the Interface Segregation Principle
-            $enquiry->setDiscountedPrice(50);
-            $enquiry->setPrice(100);
-            $enquiry->setPromotionId(3);
-            $enquiry->setPromotionName('Christmas sales mega discounts');
+            $modifiedPrice = $priceModifier->modify($price, $quantity, $promotion, $enquiry);
+
+            if ($modifiedPrice < $lowestPrice) {
+                //TODO: split this into interfaces to resolve the Interface Segregation Principle
+                $enquiry->setDiscountedPrice($modifiedPrice);
+                $enquiry->setPromotionId($promotion->getId());
+                $enquiry->setPromotionName($promotion->getName());
+
+                $lowestPrice = $modifiedPrice;
+            }
         }
 
         return $enquiry;
