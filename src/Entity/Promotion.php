@@ -88,33 +88,8 @@ class Promotion
         return $this;
     }
 
-    /**
-     * @return Collection<int, ProductPromotion>
-     */
     public function getProductPromotions(): Collection
     {
         return $this->productPromotions;
-    }
-
-    public function addProductPromotions(ProductPromotion $productPromotions): self
-    {
-        if (!$this->productPromotions->contains($productPromotions)) {
-            $this->productPromotions->add($productPromotions);
-            $productPromotions->setPromotion($this);
-        }
-
-        return $this;
-    }
-
-    public function removeProductPromotions(ProductPromotion $productPromotions): self
-    {
-        if ($this->productPromotions->removeElement($productPromotions)) {
-            // set the owning side to null (unless already changed)
-            if ($productPromotions->getPromotion() === $this) {
-                $productPromotions->setPromotion(null);
-            }
-        }
-
-        return $this;
     }
 }

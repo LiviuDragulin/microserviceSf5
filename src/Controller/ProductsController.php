@@ -4,7 +4,7 @@ namespace App\Controller;
 
 use App\Cache\PromotionCache;
 use App\DTO\LowestPriceEnquiry;
-use App\Filter\PromotionsFilterInterface;
+use App\Filter\PriceFilterInterface;
 use App\Repository\ProductRepository;
 use App\Repository\PromotionRepository;
 use App\Service\Serializer\DTOSerializer;
@@ -28,7 +28,7 @@ class ProductsController extends AbstractController
         Request $request, 
         int $id, 
         DTOSerializer $serializer,
-        PromotionsFilterInterface $promotionsFilter,
+        PriceFilterInterface $priceFilter,
         PromotionCache $promotionCache
     ): Response
     {
@@ -40,7 +40,7 @@ class ProductsController extends AbstractController
 
         $promotions = $promotionCache->findValidForProduct($product, $lowestPriceEnquiry->getRequestDate());
         
-        $modifiedEnquiry = $promotionsFilter->apply($lowestPriceEnquiry, ...$promotions);
+        $modifiedEnquiry = $priceFilter->apply($lowestPriceEnquiry, ...$promotions);
 
         $responseContent = $serializer->serialize($modifiedEnquiry, 'json');
 

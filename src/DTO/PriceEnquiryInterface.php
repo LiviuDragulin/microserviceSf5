@@ -9,4 +9,8 @@ interface PriceEnquiryInterface extends PromotionEnquiryInterface
     public function setDiscountedPrice(int $discountedPrice);
 
     public function getQuantity(): ?int;
+
+    public function getRequestDate(): string;
+
+    public function getVoucherCode(): ?string;
 }
